@@ -1,17 +1,44 @@
 <template>
-  <div class="card">
-    <img class="ribbon" src="../assets/ribbon.svg" alt="Ribbon" />
-    <img class="profile-img" src="../assets/logo.png" alt="Profile Image" />
-    <p class="name">Name</p>
-    <button class="button">yoyo</button>
+  <div>
+    <a-row justify="space-between">
+      <a-col :span="4" v-for="(user, i) in users" :key="i">
+        <div class="card">
+          <img class="ribbon" src="../assets/ribbon.svg" alt="Ribbon" />
+          <img
+            class="profile-img"
+            src="../assets/logo.png"
+            alt="Profile Image"
+          />
+          <p class="name">{{ user.firstName }} {{ user.lastName }}</p>
+          <a-button class="button">yoyo</a-button>
+        </div>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
 <script>
+import UserAPI from "../services/api.service.js";
 export default {
   name: "ProfileCard",
   props: {
     msg: String,
+  },
+  data() {
+    return {
+      users: [],
+    };
+  },
+  created() {
+    UserAPI.getUser().then((response) => {
+      console.log(response.data);
+      this.users = response.data;
+    });
+  },
+  methods: {
+    handleClick() {
+      this.$emit("clicked");
+    },
   },
 };
 </script>
@@ -49,7 +76,6 @@ export default {
   height: 125px;
   width: 125px;
   object-fit: cover;
-  background-color: #C4C4C4;
-;
+  background-color: #c4c4c4;
 }
 </style>
