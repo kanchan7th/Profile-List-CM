@@ -1,16 +1,29 @@
 <template>
   <div>
-    <a-row justify="space-between">
-      <a-col :span="4" v-for="(user, i) in users" :key="i">
+    <a-row type="flex" justify="space-around">
+      <a-col v-for="(user, i) in users" :key="i">
         <div class="card">
-          <img class="ribbon" src="../assets/ribbon.svg" alt="Ribbon" />
+          <template v-if="user.status === 'active'">
+            <img class="ribbon" src="../assets/ribbon.svg" alt="Ribbon" />
+          </template>
+          <template v-if="user.status === 'inactive'">
+            <img class="ribbon" src="../assets/ribbon-inactive.svg" alt="Ribbon" />
+          </template>
           <img
             class="profile-img"
-            src="../assets/logo.png"
+            :src="user.photos[2].url"
             alt="Profile Image"
           />
           <p class="name">{{ user.firstName }} {{ user.lastName }}</p>
-          <a-button class="button">yoyo</a-button>
+          <div v-if="user.signal === 1 || user.signal === 2">
+          <a-button class="button ok">OK</a-button>
+          </div>
+          <div v-else-if="user.signal === 3">
+            <a-button class="button solid">SOLID</a-button>
+          </div>
+          <div v-else-if="user.signal === 4 || user.signal === 5">
+            <a-button class="button good">GOOD</a-button>
+          </div>
         </div>
       </a-col>
     </a-row>
@@ -43,7 +56,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .card {
   background: #fafafa;
@@ -51,6 +63,7 @@ export default {
   border-radius: 16px;
   padding: 32px;
   position: relative;
+  margin: 10px 0;
 }
 .name {
   font-size: 14px;
@@ -58,13 +71,19 @@ export default {
   color: #121418;
 }
 .button {
-  padding: 8px 24px;
-  width: 77px;
-  height: 30px;
   margin: auto;
-  background: #5fdba7;
   border-radius: 16px;
   border: none;
+}
+.button.good {
+  background: #5fdba7;
+}
+.button.ok {
+  background: #0F60DA;
+  color: #fff;
+}
+.button.solid {
+  background: #F3AD63;
 }
 .ribbon {
   position: absolute;
